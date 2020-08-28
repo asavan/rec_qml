@@ -12,4 +12,4 @@ OTHER_FILES += \
 RESOURCES += \
     resources.qrc
 
-RC_ICONS = icon.ico
+RC_ICONS = images/icon.ico

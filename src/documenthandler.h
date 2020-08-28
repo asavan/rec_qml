@@ -68,8 +68,7 @@ class DocumentHandler : public QObject
 
     Q_PROPERTY(int questionNumber READ questionNumber WRITE setQuestionNumber NOTIFY questionNumberChanged)
     Q_PROPERTY(QString timeSpent READ timeSpent)
-    Q_PROPERTY(int size READ size)
-
+    Q_PROPERTY(int size READ size CONSTANT)
 public:
     DocumentHandler();
 

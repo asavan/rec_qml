@@ -1,43 +1,3 @@
-/****************************************************************************
-**
-** Copyright (C) 2015 The Qt Company Ltd.
-** Contact: http://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
@@ -66,89 +26,84 @@ ApplicationWindow {
         standardButtons: StandardButton.Ok | StandardButton.Cancel
         id: welcomeDialog
         width: 420
-         Component.onCompleted: {
-             login.forceActiveFocus()
-         }
+        Component.onCompleted: {
+            login.forceActiveFocus()
+        }
 
         onAccepted: {
-            console.log(login.text)
             if (login.text != "") {
-            document.username = login.text
-            mainWinwow.visible = true
-            document.startExamen()
-            timer.start()
+                document.username = login.text
+                mainWinwow.visible = true
+                document.startExamen()
+                timer.start()
             } else {
                 errorDialogName.text = "Введите настоящее имя"
                 errorDialogName.visible = true
             }
         }
         onRejected: {
-            console.log("exit")
+            // console.log("exit")
             Qt.quit()
         }
         onDiscard: Qt.quit()
         onHelp: {
-            console.log("help")
+            // console.log("help")
             aboutBox.open()
         }
-       TextField {
-           font.pixelSize: 20
-           anchors.fill: parent
-//           background: Rectangle {
-//               radius: 2
-//               implicitHeight: 50
-//               implicitWidth: 400
-//           }
-           id: login
-           focus: true
-       }
+        TextField {
+            font.pixelSize: 20
+            anchors.fill: parent
+            id: login
+            focus: true
+        }
     }
 
+    Action {
+        id: rightAction
+        text: "Следующий вопрос"
+        shortcut: "ctrl+r"
+        icon.name: "edit-redo"
+        onTriggered: {
+            document.go = true
+            textArea.forceActiveFocus()
+        }
+    }
 
     Action {
-           id: rightAction
-           text: "Следующий вопрос"
-           shortcut: "ctrl+r"
-           icon.source: "images/editredo.png"
-           icon.name: "format-justify-right"
-           onTriggered: {
-               document.go = true
-               textArea.forceActiveFocus()
-           }
-       }
+        id: exitAction
+        text: "Выход и сохранение"
+        shortcut: "ctrl+q"
+        icon.name: "document-save-as"
+        onTriggered: {
+            document.exit()
+            Qt.quit()
+        }
+    }
 
     Action {
-           id: exitAction
-           text: "Выход и сохранение"
-           shortcut: "ctrl+q"
-           icon.source: "images/filesave.png"
-           onTriggered: {
-               document.exit()
-               Qt.quit()
-           }
-       }
-
-    Action {
-           id: leftAction
-           text: "Предыдущий вопрос"
-           shortcut: "ctrl+l"
-           icon.source: "images/editundo.png"
-           onTriggered: document.go = false
-       }
+        id: leftAction
+        text: "Предыдущий вопрос"
+        shortcut: "ctrl+l"
+        icon.name: "edit-undo"
+        onTriggered: document.go = false
+    }
 
     menuBar: MenuBar {
         Menu {
             title: "&File"
             MenuItem {
-                action: exitAction
+                action: leftAction
+                icon.source: "../images/editundo.png"
                 icon.color: "transparent"
             }
             MenuItem {
                 action: rightAction
+                icon.source: "../images/editredo.png"
                 icon.color: "transparent"
             }
             MenuItem {
-                action: leftAction
+                action: exitAction
+                icon.source: "../images/filesave.png"
                 icon.color: "transparent"
             }
         }
@@ -169,46 +124,46 @@ ApplicationWindow {
         height: 40
         width: parent.width
         TextArea {
-             font.pixelSize: 20
-             id: examInfoNumber
-             readOnly: true
-             text:"Вопрос номер " + document.questionNumber + " из " + document.size
-             Layout.fillHeight: true
-             Layout.fillWidth: true
-             background: Rectangle {
-                 radius: 2
-                 color: "transparent"
-                 border.color: "#333"
-                 border.width: 1
-             }
+            font.pixelSize: 20
+            id: examInfoNumber
+            readOnly: true
+            text:"Вопрос номер " + document.questionNumber + " из " + document.size
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            background: Rectangle {
+                radius: 2
+                color: "transparent"
+                border.color: "#333"
+                border.width: 1
+            }
         }
 
         Timer {
             id: timer
-               interval: 1000; running: false; repeat: true
-               onTriggered: {
-                       time.text = document.timeSpent
-               }
-           }
-         TextField {
-             Layout.fillHeight: true
-             id: time
-             width: 100
-             background: Rectangle {
-                 radius: 2
-                 implicitWidth: 100
-//                 implicitHeight: 24
-                 color: "transparent"
-                 border.color: "#333"
-                 border.width: 1
-             }
-             font.pixelSize: 20
-             //readOnly: true
-         }
+            interval: 1000; running: false; repeat: true
+            onTriggered: {
+                time.text = document.timeSpent
+            }
+        }
+        TextField {
+            Layout.fillHeight: true
+            id: time
+            width: 100
+            background: Rectangle {
+                radius: 2
+                implicitWidth: 100
+                //                 implicitHeight: 24
+                color: "transparent"
+                border.color: "#333"
+                border.width: 1
+            }
+            font.pixelSize: 20
+            //readOnly: true
+        }
     }
 
     SplitView {
-       // anchors.fill: parent
+        // anchors.fill: parent
         width: parent.width
         anchors.bottom: buttonlayout.top
         anchors.top: examInfo.bottom
@@ -221,9 +176,6 @@ ApplicationWindow {
             // height: parent.height*2/3
             // frameVisible: false
             font.pixelSize: 20
-           // width: parent.width
-           // anchors.top: parent.top
-           // anchors.bottom: textArea.top
             readOnly: true
             wrapMode: "Wrap"
             text: document.question
@@ -237,10 +189,11 @@ ApplicationWindow {
             font.pixelSize: 20
             baseUrl: "qrc:/"
             text: document.text
+            wrapMode: "Wrap"
             // textFormat: Qt.RichText
             Component.onCompleted: forceActiveFocus()
         }
-   }
+    }
 
     RowLayout {
         id: buttonlayout
@@ -283,7 +236,7 @@ ApplicationWindow {
         target: textArea
         Component.onCompleted: {
             if (document.dbloaded) {
-             welcomeDialog.visible = true
+                welcomeDialog.visible = true
             } else {
                 onError("Не найдена база с вопросами")
             }
