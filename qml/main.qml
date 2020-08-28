@@ -177,8 +177,7 @@ ApplicationWindow {
              Layout.fillWidth: true
              background: Rectangle {
                  radius: 2
-                 implicitHeight: 24
-                 color: "white"
+                 color: "transparent"
                  border.color: "#333"
                  border.width: 1
              }
@@ -198,8 +197,8 @@ ApplicationWindow {
              background: Rectangle {
                  radius: 2
                  implicitWidth: 100
-                 implicitHeight: 24
-                 color: "white"
+//                 implicitHeight: 24
+                 color: "transparent"
                  border.color: "#333"
                  border.width: 1
              }
