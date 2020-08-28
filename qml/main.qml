@@ -38,17 +38,14 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.5
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.2
-import QtQuick.Window 2.1
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.14
+import QtQuick.Controls 2.14
+import QtQuick.Layouts 1.14
+import QtQuick.Dialogs 1.3
 import org.qtproject.example 1.0
 
 ApplicationWindow {
-    flags: Qt.Window |
-           Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint
+    flags: Qt.Window | Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint
     visible: false
     id: mainWinwow
     width: 1024
@@ -73,7 +70,8 @@ ApplicationWindow {
              login.forceActiveFocus()
          }
 
-        onAccepted: {console.log(login.text)
+        onAccepted: {
+            console.log(login.text)
             if (login.text != "") {
             document.username = login.text
             mainWinwow.visible = true
@@ -94,18 +92,13 @@ ApplicationWindow {
             aboutBox.open()
         }
        TextField {
-
-           style: TextFieldStyle {
-                  textColor: "black"
-                  // @disable-check M17
-                  font.pixelSize: 20
-                  background: Rectangle {
-                      radius: 2
-                      implicitHeight: 50
-                      implicitWidth: 400
-                  }
-              }
-           // inputMask: "X"
+           font.pixelSize: 20
+           anchors.fill: parent
+//           background: Rectangle {
+//               radius: 2
+//               implicitHeight: 50
+//               implicitWidth: 400
+//           }
            id: login
            focus: true
        }
@@ -116,8 +109,8 @@ ApplicationWindow {
            id: rightAction
            text: "Следующий вопрос"
            shortcut: "ctrl+r"
-           iconSource: "images/editredo.png"
-           iconName: "format-justify-right"
+           icon.source: "images/editredo.png"
+           icon.name: "format-justify-right"
            onTriggered: {
                document.go = true
                textArea.forceActiveFocus()
@@ -128,7 +121,7 @@ ApplicationWindow {
            id: exitAction
            text: "Выход и сохранение"
            shortcut: "ctrl+q"
-           iconSource: "images/filesave.png"
+           icon.source: "images/filesave.png"
            onTriggered: {
                document.exit()
                Qt.quit()
@@ -139,21 +132,33 @@ ApplicationWindow {
            id: leftAction
            text: "Предыдущий вопрос"
            shortcut: "ctrl+l"
-           iconSource: "images/editundo.png"
+           icon.source: "images/editundo.png"
            onTriggered: document.go = false
        }
 
     menuBar: MenuBar {
         Menu {
             title: "&File"
-            MenuItem { action: exitAction }
-            MenuItem { action: rightAction }
-            MenuItem { action: leftAction }
+            MenuItem {
+                action: exitAction
+                icon.color: "transparent"
+            }
+            MenuItem {
+                action: rightAction
+                icon.color: "transparent"
+            }
+            MenuItem {
+                action: leftAction
+                icon.color: "transparent"
+            }
         }
 
         Menu {
             title: "&Help"
-            MenuItem { text: "About..." ; onTriggered: aboutBox.open() }
+            MenuItem {
+                text: "About..."
+                onTriggered: aboutBox.open()
+            }
         }
     }
 
@@ -161,42 +166,46 @@ ApplicationWindow {
         id: examInfo
         spacing: 0
         anchors.top: parent.top
-         height: 40
-          width: parent.width
-    TextArea{
-         font.pixelSize: 20
-         id: examInfoNumber
-         readOnly: true
-         text:"Вопрос номер " + document.questionNumber + " из " + document.size
-         Layout.fillHeight: true
-         Layout.fillWidth: true
-    }
-
-    Timer {
-        id: timer
-           interval: 1000; running: false; repeat: true
-           onTriggered: {
-                   time.text = document.timeSpent
-           }
-       }
-     TextField {
-         Layout.fillHeight: true
-         id: time
-         width: 100
-         style: TextFieldStyle {
-                 textColor: "black"
-                 background: Rectangle {
-                     radius: 2
-                     implicitWidth: 100
-                     implicitHeight: 24
-                     color: "white"
-                     border.color: "#333"
-                     border.width: 1
-                 }
+        height: 40
+        width: parent.width
+        TextArea {
+             font.pixelSize: 20
+             id: examInfoNumber
+             readOnly: true
+             text:"Вопрос номер " + document.questionNumber + " из " + document.size
+             Layout.fillHeight: true
+             Layout.fillWidth: true
+             background: Rectangle {
+                 radius: 2
+                 implicitHeight: 24
+                 color: "white"
+                 border.color: "#333"
+                 border.width: 1
              }
-         font.pixelSize: 20
-         //readOnly: true
-     }
+        }
+
+        Timer {
+            id: timer
+               interval: 1000; running: false; repeat: true
+               onTriggered: {
+                       time.text = document.timeSpent
+               }
+           }
+         TextField {
+             Layout.fillHeight: true
+             id: time
+             width: 100
+             background: Rectangle {
+                 radius: 2
+                 implicitWidth: 100
+                 implicitHeight: 24
+                 color: "white"
+                 border.color: "#333"
+                 border.width: 1
+             }
+             font.pixelSize: 20
+             //readOnly: true
+         }
     }
 
     SplitView {
@@ -209,14 +218,15 @@ ApplicationWindow {
         TextArea {
             Accessible.name: "question"
             id: textAreaQ
+            SplitView.minimumHeight: 200
             // height: parent.height*2/3
             // frameVisible: false
             font.pixelSize: 20
-            height: 320
            // width: parent.width
            // anchors.top: parent.top
            // anchors.bottom: textArea.top
             readOnly: true
+            wrapMode: "Wrap"
             text: document.question
             // textFormat: Qt.RichText
         }
@@ -252,7 +262,6 @@ ApplicationWindow {
             action: exitAction
         }
     }
-
 
 
     MessageDialog {
