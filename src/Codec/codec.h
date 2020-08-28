@@ -12,6 +12,4 @@ namespace Codec {
 } // namespace Codec
 
 void SaveStringToTextFile(std::ostream &os, const std::string &str);
-std::string  IntToString(int n, int field_size = 0);
-
-
+std::string IntToString(size_t n, size_t field_size = 0);

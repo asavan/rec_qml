@@ -73,16 +73,15 @@ void SaveStringToTextFile(std::ostream &os, const std::string &str)
 	os<<str<<std::endl;
 }
 
-std::string  IntToString(int in, int field_size)
+std::string IntToString(size_t in, size_t field_size)
 {
 	char buf[8];
 	sprintf_s(buf, "%d", in);
 	std::string buf1 = buf;
 	std::string temp_spaces;
-	for (int i = buf1.size(); i < field_size; ++i)
+    for (size_t i = buf1.size(); i < field_size; ++i)
 		temp_spaces+=' ';
 	buf1 = temp_spaces + buf1;
 
 	return buf1;
 }
-

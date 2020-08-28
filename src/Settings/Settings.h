@@ -3,12 +3,8 @@
 
 class Settings
 {
-
-	static const int number_of_fields = 3;
+    static const size_t number_of_fields = 3;
 public:
-	
-
-	//Settings();
 	void LoadFromFile();
 	std::string get_name() const;
 	std::string get_file_name() const;	
@@ -20,6 +16,5 @@ private:
 	std::string get_names(size_t i) const;
 	void set_names(size_t i, const std::string &str);
 
-	std::string names[number_of_fields];//name, rasshir, file_name;
-
+    std::string names[number_of_fields]; //name, extension, file_name;
 };

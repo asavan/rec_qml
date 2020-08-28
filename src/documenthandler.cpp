@@ -1,71 +1,22 @@
-/****************************************************************************
-**
-** Copyright (C) 2015 The Qt Company Ltd.
-** Contact: http://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
 #include "documenthandler.h"
-
-#include <QtGui/QTextDocument>
-#include <QtGui/QTextCursor>
-#include <QtGui/QFontDatabase>
-#include <QtCore/QFileInfo>
-
-#include <QException>
 
 #include <fstream>
 
 
 DocumentHandler::DocumentHandler()
-    : m_target(0),
-      m_doc(0),
+    : m_target(nullptr),
+      m_doc(nullptr),
       curr(0),
       m_dbloaded(false)
 {
-    std::istream* ifs = 0;
-    ifs = new std::ifstream("db.rec", std::ios_base::binary);
-    if( *ifs)
+    std::ifstream ifs("db.rec", std::ios_base::binary);
+    if(ifs)
     {
-        bool res = ex.LoadFromFile( *ifs );
+        bool res = ex.LoadFromFile(ifs);
         if(res)
         {
             ex.MakeAnswerOrder();
         }
-        delete ifs;
     } else {
         error("Не найдена база с вопросами");
         return;
@@ -76,28 +27,30 @@ DocumentHandler::DocumentHandler()
     setDocumentTitle(title);
     QString answer("Ответ");
     QByteArray byteArray = answer.toLocal8Bit();
-    std::string str(byteArray.constData(), byteArray.length());
+    std::string str(byteArray.constData(), static_cast<size_t>(byteArray.length()));
     ex.setAnswer_rus(str);
 
     QString question("Вопрос");
     QByteArray byteArrayQ = question.toLocal8Bit();
-    std::string strQ(byteArrayQ.constData(), byteArrayQ.length());
+    std::string strQ(byteArrayQ.constData(), static_cast<size_t>(byteArrayQ.length()));
     ex.setQuestion_rus(strQ);
 
 }
 
 void DocumentHandler::setTarget(QQuickItem *target)
 {
-    m_doc = 0;
+    m_doc = nullptr;
     m_target = target;
-    if (!m_target)
+    if (!m_target) {
         return;
+    }
 
     QVariant doc = m_target->property("textDocument");
     if (doc.canConvert<QQuickTextDocument*>()) {
         QQuickTextDocument *qqdoc = doc.value<QQuickTextDocument*>();
-        if (qqdoc)
+        if (qqdoc) {
             m_doc = qqdoc->textDocument();
+        }
     }
     emit targetChanged();
 }
@@ -108,12 +61,17 @@ void DocumentHandler::setGo(bool isRight)
     if (isRight)
     {
         curr++;
-        if( curr==ex.size() ) curr=0;
+        if( curr == static_cast<int>(ex.size()) )  {
+            curr=0;
+        }
     }
     else
     {
-        if( curr==0 ) curr=ex.size()-1;
-        else curr--;
+        if(curr == 0) {
+            curr = static_cast<int>(ex.size()) - 1;
+        } else {
+            curr--;
+        }
     }
 
     loadState();
@@ -134,8 +92,9 @@ QString DocumentHandler::timeSpent() const
 
 int DocumentHandler::size() const
 {
-    return ex.size();
+    return static_cast<int>(ex.size());
 }
+
 void DocumentHandler::setDocumentTitle(QString arg)
 {
     if (m_documentTitle != arg) {
@@ -204,26 +163,25 @@ QString DocumentHandler::question() const
 
 void DocumentHandler::loadState()
 {
-    setQuestion(QString::fromLocal8Bit(ex.get_question(curr).c_str()));
-    setText(QString::fromLocal8Bit(ex.get_answer(curr).c_str()));
+    setQuestion(QString::fromLocal8Bit(ex.get_question(static_cast<size_t>(curr)).c_str()));
+    setText(QString::fromLocal8Bit(ex.get_answer(static_cast<size_t>(curr)).c_str()));
 }
 
 void DocumentHandler::saveState()
 {
     QByteArray byteArray2 = m_doc->toPlainText().replace("\n", "\r\n").toLocal8Bit();
-    // qDebug() << byteArray2;
-    std::string str(byteArray2.constData(), byteArray2.length());
-    ex.set_answer( curr, str );
+    std::string str(byteArray2.constData(), static_cast<size_t>(byteArray2.length()));
+    ex.set_answer(static_cast<size_t>(curr), str);
 }
 
 int DocumentHandler::questionNumber() const
 {
-    return curr+1;
+    return curr + 1;
 }
 
 void DocumentHandler::setQuestionNumber(const int &value)
 {
-    curr = value-1;
+    curr = value - 1;
 }
 
 bool DocumentHandler::dbloaded() const
@@ -235,5 +193,3 @@ void DocumentHandler::setDbloaded(bool dbloaded)
 {
     m_dbloaded = dbloaded;
 }
-
-
