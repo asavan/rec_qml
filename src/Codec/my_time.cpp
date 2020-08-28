@@ -27,7 +27,7 @@ my_time_realization::my_time_realization()
 
 }
 
-my_time::my_time() : realization(new my_time_realization())
+my_time::my_time() : realization(std::make_unique<my_time_realization>())
 {
 }
 

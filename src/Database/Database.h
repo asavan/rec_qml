@@ -1,20 +1,10 @@
 #pragma once
+#include "Adress.h"
 #include "../Settings/Settings.h"
 
 #include <vector>
 #include <string>
-#include <iostream>
-
-
-class Adress
-{
-    size_t i;
-    size_t j;
-public:	
-    Adress(size_t _j, size_t _i) : i(_i), j(_j) {}
-    size_t getZoneNumber() const {return j;}
-    size_t getQuestionNumber() const {return i;}
-};
+#include <ostream>
 
 class q_zone
 {
@@ -27,7 +17,7 @@ private:
 public:
     size_t LoadZoneBin( std::istream & is);
     //size_t q_number() const {return 1;}
-    size_t difficult() const;
+    int difficult() const;
     // for binary input
     q_zone();
     // for text input

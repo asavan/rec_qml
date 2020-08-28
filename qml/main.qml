@@ -138,11 +138,12 @@ ApplicationWindow {
 
         Timer {
             id: timer
-            interval: 1000; running: false; repeat: true
+            interval: 1000; running: true; repeat: true
             onTriggered: {
                 time.text = document.timeSpent
             }
         }
+
         TextField {
             Layout.fillHeight: true
             id: time

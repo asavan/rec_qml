@@ -22,7 +22,7 @@ DocumentHandler::DocumentHandler()
         return;
     }
     setDbloaded(true);
-    QString title = QString::fromLocal8Bit(ex.get_set().get_name().c_str());
+    QString title = QString::fromLocal8Bit(ex.getTitle().c_str());
 
     setDocumentTitle(title);
     QString answer("Ответ");
@@ -131,11 +131,10 @@ void DocumentHandler::exit()
 {
     saveState();
     std::ofstream ofs;
-    ofs.open((m_username.toLocal8Bit().toStdString()+"."+ex.get_set().get_ext()).c_str(), std::ios::binary);
-    if( ofs.is_open() )
+    ofs.open((m_username.toLocal8Bit().toStdString() + "." + ex.get_ext()), std::ios::binary);
+    if(ofs)
     {
         ex.SaveToFile( ofs, m_username.toLocal8Bit().data() );
-        ofs.close();
     }
 }
 

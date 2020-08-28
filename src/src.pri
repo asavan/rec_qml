@@ -9,6 +9,7 @@ SOURCES += \
 
 
 HEADERS += \
+    $$PWD/Database/Adress.h \
     $$PWD/documenthandler.h \
     $$PWD/Codec/codec.h \
     $$PWD/Codec/my_time.h \

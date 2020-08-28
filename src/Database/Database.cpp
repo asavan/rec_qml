@@ -165,7 +165,7 @@ size_t Database::size() const
     return zones.size();
 }
 
-size_t q_zone::difficult() const 
+int q_zone::difficult() const
 {
     return z_property;
 }

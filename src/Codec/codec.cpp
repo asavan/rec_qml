@@ -7,81 +7,73 @@ namespace Codec {
 const char def_char = '\xC6';
 
 std::vector<char> Encode( const std::string & str ) {
-	size_t l = str.size();
-	std::vector<char> res( l );
-	if( l ) {
-		res[0] = str[0] + def_char;
-	}
-	for( size_t i=1; i<l; i++ ) {
-		res[i] = res[i-1] + str[i];
-	}
-	return res;
+    size_t l = str.size();
+    std::vector<char> res( l );
+    if( l ) {
+        res[0] = str[0] + def_char;
+    }
+    for( size_t i=1; i<l; i++ ) {
+        res[i] = res[i-1] + str[i];
+    }
+    return res;
 }
 
 std::string Decode( const std::vector<char> & str ) 
 {
-	size_t l = str.size();
-	std::string res;
-	res.resize( l );
-	if( l>1 ) 
-	{
-		for( size_t i=l-1; i>0; i-- ) 
-		{
-			res[i] = str[i]-str[i-1];
-		}
-	}
-	if( l ) 
-	{
-		res[0] = str[0] - def_char;
-	}
-	return res;
+    size_t l = str.size();
+    std::string res;
+    res.resize( l );
+    if( l>1 )
+    {
+        for( size_t i=l-1; i>0; i-- )
+        {
+            res[i] = str[i]-str[i-1];
+        }
+    }
+    if( l )
+    {
+        res[0] = str[0] - def_char;
+    }
+    return res;
 }
 
 void SaveStringToFile( std::ostream &os, const std::string & str_in ) 
 {
-	std::vector<char> str_enc =  Encode( str_in );
-	int l = str_enc.size();
-	os.write((char*) &l, sizeof(int));
-	//os<<l;
-	for( std::vector<char>::iterator it=str_enc.begin(); it!=str_enc.end(); it++ ) {
-		char t = *it;
-		os<<t;
-	}
-	
-	//os<< str_in;
+    std::vector<char> str_enc =  Encode( str_in );
+    int l = static_cast<int>(str_enc.size());
+    os.write((char*) &l, sizeof(int));
+    for(char t : str_enc) {
+        os<<t;
+    }
 }
 
 std::string LoadStringFromFile( std::istream &is ) {
-	int l;
-	is.read((char*) &l, sizeof(int));
-	if(!is)	{		return "";	}
-	std::vector<char> str_enc;
+    int l;
+    is.read((char*) &l, sizeof(int));
+    if(!is)	{		return "";	}
+    std::vector<char> str_enc;
 
-	for( int i=0; i<l; i++ ) 
-	{
-		char t;
-		is.get(t);
-		if( is.eof()) {	break; }
-		str_enc.push_back( t );
-	}
-	return Decode( str_enc );
+    for( int i=0; i<l; i++ )
+    {
+        char t;
+        is.get(t);
+        if( is.eof()) {	break; }
+        str_enc.push_back( t );
+    }
+    return Decode( str_enc );
 }
 
 } // namespace Codec
 void SaveStringToTextFile(std::ostream &os, const std::string &str)
 {
-	os<<str<<std::endl;
+    os<<str<<std::endl;
 }
 
 std::string IntToString(size_t in, size_t field_size)
 {
-	char buf[8];
-	sprintf_s(buf, "%d", in);
-	std::string buf1 = buf;
-	std::string temp_spaces;
-    for (size_t i = buf1.size(); i < field_size; ++i)
-		temp_spaces+=' ';
-	buf1 = temp_spaces + buf1;
-
-	return buf1;
+    std::string s = std::to_string(in);
+    if (s.size() < field_size) {
+        s.insert(s.begin(), field_size - s.size(), ' ');
+    }
+    return s;
 }
