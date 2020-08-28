@@ -9,7 +9,4 @@ OTHER_FILES += \
     qml/MyBigButton.qml
 
 
-RESOURCES += \
-    resources.qrc
-
-RC_ICONS = images/icon.ico
+RESOURCES += resources.qrc

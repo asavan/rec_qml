@@ -47,7 +47,6 @@ ApplicationWindow {
         }
         onDiscard: Qt.quit()
         onHelp: {
-            // console.log("help")
             aboutBox.open()
         }
         TextField {
@@ -93,18 +92,16 @@ ApplicationWindow {
             title: "&File"
             MenuItem {
                 action: leftAction
+                // icon.color: "transparent"
                 icon.source: "../images/editundo.png"
-                icon.color: "transparent"
             }
             MenuItem {
                 action: rightAction
                 icon.source: "../images/editredo.png"
-                icon.color: "transparent"
             }
             MenuItem {
                 action: exitAction
                 icon.source: "../images/filesave.png"
-                icon.color: "transparent"
             }
         }
 
@@ -112,6 +109,7 @@ ApplicationWindow {
             title: "&Help"
             MenuItem {
                 text: "About..."
+                icon.source: "../images/qt-logo.png"
                 onTriggered: aboutBox.open()
             }
         }
