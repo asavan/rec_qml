@@ -5,7 +5,7 @@
 #include "../Database/Database.h"
 
 #include <algorithm>
-#include <ctime>
+#include <random>
 
 typedef unsigned int uint;
 
@@ -27,14 +27,17 @@ std::string Examination::get_ext() const {
 
 void Examination::MakeAnswerOrder(void)
 {
-    srand( static_cast<uint>(time(nullptr)));
     std::vector<Adress > an;
+    std::random_device rd;
+    std::mt19937 g(rd());
+
     for (size_t i = 0; i < db->size(); ++i)
     {
-        size_t rnd = static_cast<size_t>(rand()) % (*db)[i].size();
-        an.push_back( Adress(i, rnd));
+        std::uniform_int_distribution<size_t> dist(0, (*db)[i].size() - 1);
+        an.push_back(Adress(i, dist(g)));
     }
-    random_shuffle( an.begin( ), an.end( ) );
+
+    std::shuffle(an.begin(), an.end(), g);
     answers.resize(an.size());
     for (size_t i = 0; i < answers.size(); ++i)
     {
