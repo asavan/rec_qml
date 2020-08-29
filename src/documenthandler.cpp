@@ -1,5 +1,5 @@
-#include "Examen/Examination.h"
 #include "documenthandler.h"
+#include "Examen/Examination.h"
 
 #include <fstream>
 #include <QQuickTextDocument>
@@ -59,7 +59,7 @@ void DocumentHandler::setTarget(QQuickItem *target)
     emit targetChanged();
 }
 
-void DocumentHandler::setGo(bool isRight)
+void DocumentHandler::go(bool isRight)
 {
     saveState();
     if (isRight)
@@ -87,7 +87,6 @@ QString DocumentHandler::documentTitle() const
 {
     return m_documentTitle;
 }
-
 
 QString DocumentHandler::timeSpent() const
 {
@@ -127,7 +126,6 @@ void DocumentHandler::setUsername(const QString &arg)
         m_username = arg;
     }
 }
-
 
 void DocumentHandler::exit()
 {

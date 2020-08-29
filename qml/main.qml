@@ -32,7 +32,7 @@ ApplicationWindow {
 
         onAccepted: {
             if (login.text != "") {
-                document.username = login.text
+                document.setUsername(login.text)
                 mainWinwow.visible = true
                 document.startExamen()
                 timer.start()
@@ -58,12 +58,24 @@ ApplicationWindow {
     }
 
     Action {
+        id: leftAction
+        text: "Предыдущий вопрос"
+        shortcut: "ctrl+l"
+        icon.name: "edit-undo"
+        onTriggered: {
+            document.go(false)
+            textArea.forceActiveFocus()
+        }
+
+    }
+
+    Action {
         id: rightAction
         text: "Следующий вопрос"
         shortcut: "ctrl+r"
         icon.name: "edit-redo"
         onTriggered: {
-            document.go = true
+            document.go(true)
             textArea.forceActiveFocus()
         }
     }
@@ -79,13 +91,6 @@ ApplicationWindow {
         }
     }
 
-    Action {
-        id: leftAction
-        text: "Предыдущий вопрос"
-        shortcut: "ctrl+l"
-        icon.name: "edit-undo"
-        onTriggered: document.go = false
-    }
 
     menuBar: MenuBar {
         Menu {

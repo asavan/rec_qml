@@ -21,14 +21,13 @@ class DocumentHandler : public QObject
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(QString question READ question WRITE setQuestion NOTIFY questionChanged)
     Q_PROPERTY(QString documentTitle READ documentTitle WRITE setDocumentTitle NOTIFY documentTitleChanged)
-    Q_PROPERTY(bool go WRITE setGo)
-    Q_PROPERTY(QString username WRITE setUsername)
-
-    Q_PROPERTY(bool dbloaded READ dbloaded WRITE setDbloaded)
 
     Q_PROPERTY(int questionNumber READ questionNumber WRITE setQuestionNumber NOTIFY questionNumberChanged)
     Q_PROPERTY(QString timeSpent READ timeSpent)
+
+    Q_PROPERTY(bool dbloaded READ dbloaded CONSTANT)
     Q_PROPERTY(int size READ size CONSTANT)
+
 public:
     DocumentHandler();
     ~DocumentHandler();
@@ -41,8 +40,8 @@ public:
     QString question() const;
 
 
-    void setGo(bool isRight);
-    void setUsername(const QString &arg);
+    Q_INVOKABLE void go(bool isRight);
+    Q_INVOKABLE void setUsername(const QString &arg);
 
     QString documentTitle() const;
 
@@ -60,9 +59,7 @@ public Q_SLOTS:
 
     void setText(const QString &arg);
     void setQuestion(const QString &arg);
-
     void setDocumentTitle(QString arg);
-
     void exit();
     void startExamen();
 
