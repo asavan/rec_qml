@@ -3,6 +3,7 @@
 #include "../Codec/my_time.h"
 #include "../Codec/codec.h"
 #include "../Database/Database.h"
+#include "../Settings/Settings.h"
 
 #include <algorithm>
 #include <random>
@@ -18,14 +19,14 @@ Examination::Examination() : _time(nullptr), db(std::make_unique<Database>()) {
 Examination::~Examination() = default;
 
 std::string Examination::getTitle() const {
-    return db->set.get_name();
+    return db->set->get_name();
 }
 
 std::string Examination::get_ext() const {
-    return db->set.get_ext();
+    return db->set->get_ext();
 }
 
-void Examination::MakeAnswerOrder(void)
+void Examination::MakeAnswerOrder()
 {
     std::vector<Adress > an;
     std::random_device rd;
@@ -82,7 +83,7 @@ void Examination::SaveToFile( std::ostream &os, const char * username ) const
 {
     void (*save_string)(std::ostream &os, const std::string &s);
     save_string = Codec::SaveStringToFile;
-    db->set.SaveToFile(os,save_string);
+    db->set->SaveToFile(os, save_string);
     save_string( os, username );
     save_string(os, _time->get_date());
     save_string(os, _time->get_time());

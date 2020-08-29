@@ -1,20 +1,4 @@
 #include "Settings.h"
-#include <fstream>
-
-static std::string loadFromTextFile(std::istream &is) 
-{
-    std::string temp;
-    getline(is, temp);
-    return temp;
-}
-
-void Settings::LoadFromFile()
-{
-    //	setlocale( LC_ALL, ".ACP" ); //vs9 bag
-    std::ifstream ifs("settings.txt");
-    if (!ifs.is_open()) return;
-    LoadFromFile(ifs, loadFromTextFile);
-}
 
 std::string Settings::get_name() const
 {

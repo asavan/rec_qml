@@ -191,6 +191,9 @@ ApplicationWindow {
             wrapMode: "Wrap"
             // textFormat: Qt.RichText
             Component.onCompleted: forceActiveFocus()
+            background: Rectangle {
+                color: "white"
+            }
         }
     }
 

@@ -1,10 +1,11 @@
 #pragma once
 #include "Adress.h"
-#include "../Settings/Settings.h"
 
-#include <vector>
-#include <string>
+#include <memory>
 #include <ostream>
+#include <string>
+#include <vector>
+
 
 class q_zone
 {
@@ -29,10 +30,12 @@ public:
     //friend std::ostream& operator <<(std::ostream& os, const q_zone & z);
 };
 
+class Settings;
 class Database {
     std::vector<q_zone> zones;
 public:
-    Settings set;
+    // make private
+    std::unique_ptr<Settings> set;
     size_t LoadFromBinFile( std::istream &is);
     size_t LoadFromTextFile( std::istream &is);
     void SaveToBinFile( std::ostream &os) const ;

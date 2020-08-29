@@ -1,13 +1,26 @@
 #include "Database.h"
 #include "../Codec/codec.h"
+#include "../Settings/Settings.h"
+
 #include <stdexcept>
 #include <cstdlib>
 
 
-inline bool empty_symbol(char c)
-{
-    return (c =='\n' || c ==' ' ||c =='\t');
+namespace {
+    inline bool empty_symbol(char c)
+    {
+        return (c =='\n' || c ==' ' ||c =='\t');
+    }
+
+    static void ErrorInZone(size_t n)
+    {
+        std::string str("zone ");
+        str += IntToString(n+1);
+        str += " is empty";
+        throw std::runtime_error(str);
+    }
 }
+
 size_t q_zone::LoadZoneText (std::istream &is, int pro)
 {
     questions.clear();
@@ -51,13 +64,6 @@ size_t q_zone::LoadZoneText (std::istream &is, int pro)
 
 }
 
-static void ErrorInZone(size_t n)
-{
-    std::string str("zone ");
-    str += IntToString(n+1);
-    str += " is empty";
-    throw std::runtime_error(str);
-}
 
 q_zone::q_zone(std::istream &is, int pro)
 {
@@ -109,7 +115,8 @@ size_t Database::LoadFromBinFile( std::istream & is)
         }
     }
 
-    set.LoadFromFile(is, Codec::LoadStringFromFile);
+    set = std::make_unique<Settings>();
+    set->LoadFromFile(is, Codec::LoadStringFromFile);
 
     while (!is.eof()&&is)
     {
@@ -153,7 +160,7 @@ size_t q_zone::LoadZoneBin( std::istream &is)
 void Database::SaveToBinFile(std::ostream &os) const
 {
     os.write( sign, sizeof(sign));
-    set.SaveToFile(os, Codec::SaveStringToFile);
+    set->SaveToFile(os, Codec::SaveStringToFile);
     for (size_t i = 0; i < size(); ++i)
     {
         zones[i].SaveToBinFile(os);
