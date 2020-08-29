@@ -109,10 +109,8 @@ void DocumentHandler::setDocumentTitle(QString arg)
 
 void DocumentHandler::setText(const QString &arg)
 {
-    if (m_text != arg) {
-        m_text = arg;
-        emit textChanged();
-    }
+    m_text = arg;
+    emit textChanged();
 }
 
 void DocumentHandler::setQuestion(const QString &arg)
