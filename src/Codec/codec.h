@@ -1,13 +1,12 @@
 #pragma once
 
+#include <iosfwd>
 #include <string>
-#include <ostream>
+
 
 namespace Codec {
-
-    void SaveStringToFile( std::ostream &os, const std::string& str_in );
-	std::string LoadStringFromFile( std::istream &is);
-
+    void SaveStringToFile(std::ostream &os, const std::string& str_in);
+    std::string LoadStringFromFile(std::istream &is);
 } // namespace Codec
 
 void SaveStringToTextFile(std::ostream &os, const std::string& str);

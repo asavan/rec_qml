@@ -1,8 +1,8 @@
 #pragma once
 #include "Adress.h"
 
+#include <iosfwd>
 #include <memory>
-#include <ostream>
 #include <string>
 #include <vector>
 

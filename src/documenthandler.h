@@ -1,14 +1,14 @@
 #ifndef DOCUMENTHANDLER_H
 #define DOCUMENTHANDLER_H
 
-#include <QQuickTextDocument>
+#include <memory>
+#include <QObject>
 
-#include <qqmlfile.h>
-
-#include "Examen/Examination.h"
+class Examination;
 
 QT_BEGIN_NAMESPACE
 class QTextDocument;
+class QQuickItem;
 QT_END_NAMESPACE
 
 class DocumentHandler : public QObject
@@ -31,12 +31,12 @@ class DocumentHandler : public QObject
     Q_PROPERTY(int size READ size CONSTANT)
 public:
     DocumentHandler();
+    ~DocumentHandler();
 
     QQuickItem *target() { return m_target; }
 
     void setTarget(QQuickItem *target);
 
-    QUrl fileUrl() const;
     QString text() const;
     QString question() const;
 
@@ -83,14 +83,12 @@ private:
 
     QQuickItem *m_target;
     QTextDocument *m_doc;
-
-    QUrl m_fileUrl;
     QString m_text;
     QString m_documentTitle;
     QString m_username;
     QString m_question;
 
-    Examination ex;
+    std::unique_ptr<Examination> ex;
     int curr;
     bool m_dbloaded;
 };

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <ostream>
+#include <iosfwd>
 #include <string>
 
 class Settings
 {
-    static const size_t number_of_fields = 3;
+    static constexpr size_t number_of_fields = 3;
 public:
     std::string get_name() const;
     std::string get_file_name() const;

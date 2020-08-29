@@ -4,7 +4,7 @@
 
 namespace Codec {
 
-const char def_char = '\xC6';
+constexpr char def_char = '\xC6';
 
 std::vector<char> Encode( const std::string & str ) {
     size_t l = str.size();
@@ -43,14 +43,16 @@ void SaveStringToFile( std::ostream &os, const std::string & str_in )
     int l = static_cast<int>(str_enc.size());
     os.write((char*) &l, sizeof(int));
     for(char t : str_enc) {
-        os<<t;
+        os << t;
     }
 }
 
 std::string LoadStringFromFile( std::istream &is ) {
     int l;
     is.read((char*) &l, sizeof(int));
-    if(!is)	{		return "";	}
+    if(!is)	{
+        return "";
+    }
     std::vector<char> str_enc;
 
     for( int i=0; i<l; i++ )

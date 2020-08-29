@@ -5,20 +5,20 @@
 #include <stdexcept>
 #include <cstdlib>
 
-
 namespace {
     inline bool empty_symbol(char c)
     {
         return (c =='\n' || c ==' ' ||c =='\t');
     }
 
-    static void ErrorInZone(size_t n)
+    [[ noreturn ]] void ErrorInZone(size_t n)
     {
         std::string str("zone ");
         str += IntToString(n+1);
         str += " is empty";
         throw std::runtime_error(str);
     }
+    constexpr char sign[]="\x00\xFFRECDB";
 }
 
 size_t q_zone::LoadZoneText (std::istream &is, int pro)
@@ -101,7 +101,7 @@ size_t Database::LoadFromTextFile( std::istream  &is)
     return zones.size();
 }
 
-const char sign[]="\x00\xFFRECDB";
+
 
 size_t Database::LoadFromBinFile( std::istream & is) 
 {

@@ -8,9 +8,6 @@
 #include <algorithm>
 #include <random>
 
-typedef unsigned int uint;
-
-
 Examination::Examination() : _time(nullptr), db(std::make_unique<Database>()) {
     setAnswer_rus("Ответ");
     setQuestion_rus("Вопрос");
